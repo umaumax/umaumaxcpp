@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 
-#include <umaumaxcpp/streampp.hpp>
+#include "umaumaxcpp/streampp.hpp"
 
 int main(int argc, char* argv[]) {
   std::vector<int> vec{0, 1, 2, 3};
