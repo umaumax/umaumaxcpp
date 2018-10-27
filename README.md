@@ -1,7 +1,7 @@
 # cpp libraries
 
 ## streampp.hpp
-* stream prity print library
+* stream pretty print library
 
 ```
 #include <iostream>
