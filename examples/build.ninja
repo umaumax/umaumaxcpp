@@ -18,4 +18,5 @@ rule shared_lib
 build always: phony
 
 build streampp: app streampp.cpp
+build picojson_util: app picojson_util.cpp
 # build a.out: app main.cpp | phony
