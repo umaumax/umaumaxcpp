@@ -1,5 +1,7 @@
 #pragma once
 
+#include <ostream>
+
 #include <vector>
 template <typename T>
 std::ostream& operator<<(std::ostream& ostr, const std::vector<T>& v) {
@@ -17,8 +19,20 @@ std::ostream& operator<<(std::ostream& ostr, const std::vector<T>& v) {
 #include <utility>
 template <typename Key, typename T>
 std::ostream& operator<<(std::ostream& ostr, const std::pair<Key, T>& m) {
-  ostr << "{Key = " << m.first << ", "
-       << "Value = " << m.second << "}";
+  ostr << "{\"" << m.first << "\": "
+       << m.second << "}";
+  return ostr;
+}
+#include <unordered_map>
+template <typename Key, typename T>
+std::ostream& operator<<(std::ostream& ostr, const std::unordered_map<Key, T>& m) {
+  if (m.empty()) {
+    ostr << "{ }";
+    return ostr;
+  }
+  ostr << "{" << *m.begin();
+  for (auto itr = ++m.begin(); itr != m.end(); itr++) ostr << ", " << *itr;
+  ostr << "}";
   return ostr;
 }
 #include <map>
