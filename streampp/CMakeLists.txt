@@ -5,5 +5,4 @@ include(cmake/common/enable_libs.cmake)
 enable_testing()
 enable_gtest()
 
-add_subdirectory(picojson_util)
-add_subdirectory(streampp)
+add_subdirectory(test)
