@@ -1,6 +1,7 @@
 macro(enable_gtest)
   if(NOT "${GTEST_FOUND}")
     find_package(GTest)
+    find_package(Threads)
   endif()
   if(NOT "${GTEST_FOUND}")
     include(cmake/common/ExternalProjectAdd_GTest.cmake)
