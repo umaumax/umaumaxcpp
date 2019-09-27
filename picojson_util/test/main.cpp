@@ -5,7 +5,7 @@
 
 #include "picojson_util/picojson_util.hpp"
 
-TEST(PicoJsonUtilTest, encode) {
+TEST(PicoJsonUtilTest, encode_normal) {
   picojson::object obj;
   std::vector<std::vector<std::vector<float>>> values(3);
   for (auto&& value : values) {
@@ -25,7 +25,19 @@ TEST(PicoJsonUtilTest, encode) {
             "0,0,0],[0,0,0],[0,0,0]]]}");
 }
 
-TEST(PicoJsonUtilTest, decode) {
+TEST(PicoJsonUtilTest, encode_blank_data_normal) {
+  picojson::object obj;
+  std::vector<std::vector<std::vector<float>>> values;
+  picojson::value value = PicoJsonUtil<decltype(values)>::Encode(values);
+  obj.emplace(std::make_pair("key", value));
+
+  picojson::value v(obj);
+  std::stringstream ss;
+  v.serialize(std::ostream_iterator<char>(ss));
+  EXPECT_EQ(ss.str(), "{\"key\":[]}");
+}
+
+TEST(PicoJsonUtilTest, decode_normal) {
   picojson::value val;
   std::string err = picojson::parse(val,
                                     "{\"key\":[[[0,0,0],[0,0,0],[0,0,"
@@ -44,6 +56,22 @@ TEST(PicoJsonUtilTest, decode) {
   EXPECT_EQ(ss.str(),
             "[[[0,0,0],[0,0,0],[0,0,0]],[[0,0,0],[0,0,0],[0,0,0]],[[0,0,0],["
             "0,0,0],[0,0,0]]]");
+}
+
+TEST(PicoJsonUtilTest, decode_blank_data_normal) {
+  picojson::value val;
+  std::string err = picojson::parse(val, "{\"key\":[]}");
+  if (!err.empty()) {
+    FAIL() << err;
+  }
+  picojson::object& obj = val.get<picojson::object>();
+  auto values =
+      PicoJsonUtil<std::vector<std::vector<std::vector<float>>>>::Decode(
+          obj["key"]);
+  std::stringstream ss;
+  PicoJsonUtil<decltype(values)>::Encode(values).serialize(
+      std::ostream_iterator<char>(ss));
+  EXPECT_EQ(ss.str(), "[]");
 }
 
 int main(int argc, char** argv) {
